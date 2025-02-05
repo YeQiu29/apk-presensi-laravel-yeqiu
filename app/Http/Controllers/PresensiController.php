@@ -7,6 +7,8 @@ use Illuminate\Foundation\Console\StorageLinkCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 use League\Flysystem\StorageAttributes;
 
@@ -36,9 +38,16 @@ class PresensiController extends Controller
         $radius = round($jarak["meters"]);
 
 
+        $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->count();
+
+        if($cek > 0) {
+            $ket = "out";
+        } else {
+            $ket = "in";
+        }
         $image = $request->image;
         $folderPath = "public/uploads/absensi/";
-        $formatName = $nik . "-" . $tgl_presensi;
+        $formatName = $nik . "-" . $tgl_presensi . "-" . $ket;
         $image_parts = explode(";base64",$image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
@@ -50,7 +59,7 @@ class PresensiController extends Controller
             'foto_in' => $fileName,
             'lokasi_in' => $lokasi
         ];
-        $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->count();
+        
         if($radius > 1000){
             echo "error|Maaf Anda Berada di Luar Radius Kantor, Jarak Anda " . $radius . " meter dari kantor|radius";
         }else{
@@ -101,5 +110,37 @@ class PresensiController extends Controller
             $kilometers = $miles * 1.609344;
             $meters = $kilometers * 1000;
             return compact('meters');
+     }
+
+     public function editprofile()
+     {
+        $nik = Auth::guard('karyawan')->user()->nik;
+        $karyawan = DB::table('karyawan')->where('nik', $nik)->first();
+        return view('presensi.editprofile', compact('karyawan'));
+     }
+     public function updateprofile(Request $request){
+        $nik = Auth::guard('karyawan')->user()->nik;
+        $nama_lengkap = $request->nama_lengkap;
+        $no_hp = $request->no_hp;
+        $password = Hash::make($request->password);
+
+        if(empty($request->password)){
+            $data = [
+                'nama_lengkap' => $nama_lengkap,
+                'no_hp' => $no_hp,
+            ];
+        } else {
+            $data = [
+                'nama_lengkap' => $nama_lengkap,
+                'no_hp' => $no_hp,
+                'password' => $password
+            ];
+        }
+        $update = DB::table('karyawan')->where('nik', $nik)->update($data);
+        if ($update){
+            return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
+        } else {
+            return Redirect::back()->with(['error' => 'Data Gagal di Update']);;
+        }
      }
 }
