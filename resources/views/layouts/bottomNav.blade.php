@@ -6,7 +6,7 @@
             <strong>Home</strong>
         </div>
     </a>
-    <a href="#" class="item">
+    <a href="/presensi/histori" class="item">
         <div class="col">
             <ion-icon name="document-text-outline" role="img" class="md hydrated"
                 aria-label="document text outline"></ion-icon>
@@ -20,10 +20,9 @@
             </div>
         </div>
     </a>
-    <a href="#" class="item">
+    <a href="/presensi/izin" class="item">
         <div class="col">
-            <ion-icon name="document-text-outline" role="img" class="md hydrated"
-                aria-label="document text outline"></ion-icon>
+            <ion-icon name="calendar-outline"></ion-icon>
             <strong>Izin</strong>
         </div>
     </a>

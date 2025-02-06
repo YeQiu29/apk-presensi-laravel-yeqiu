@@ -123,24 +123,88 @@ class PresensiController extends Controller
         $nama_lengkap = $request->nama_lengkap;
         $no_hp = $request->no_hp;
         $password = Hash::make($request->password);
-
+        $karyawan = DB::table('karyawan')->where('nik', $nik)->first();
+        if($request->hasFile('foto')){
+            $foto = $nik.".".$request->file('foto')->getClientOriginalExtension(); 
+        } else {
+            $foto = $karyawan->foto;
+        }
         if(empty($request->password)){
             $data = [
                 'nama_lengkap' => $nama_lengkap,
                 'no_hp' => $no_hp,
+                'foto' => $foto
             ];
         } else {
             $data = [
                 'nama_lengkap' => $nama_lengkap,
                 'no_hp' => $no_hp,
-                'password' => $password
+                'password' => $password,
+                'foto' => $foto
             ];
         }
         $update = DB::table('karyawan')->where('nik', $nik)->update($data);
         if ($update){
+            if($request->hasFile('foto')){
+                $folderPath = "public/uploads/karyawan/";
+                $request->file('foto')->storeAs($folderPath, $foto);
+            }
             return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
         } else {
             return Redirect::back()->with(['error' => 'Data Gagal di Update']);;
         }
+     }
+     public function histori()
+     {
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('presensi.histori', compact('namabulan'));
+     }
+
+     public function gethistori(Request $request){
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $nik = Auth::guard('karyawan')->user()->nik;
+
+        $histori = DB::table('presensi')
+            ->whereRaw('MONTH(tgl_presensi)="'.$bulan.'"')
+            ->whereRaw('YEAR(tgl_presensi)="'.$tahun.'"')
+            ->where('nik', $nik)
+            ->orderBy('tgl_presensi')
+            ->get();
+
+        return view('presensi.gethistori', compact('histori'));
+     }
+
+     public function izin()
+     {
+        return view('presensi.izin');
+     }
+
+     public function buatizin()
+     {
+        return view('presensi.buatizin');
+     }
+     public function storeizin(Request $request)
+     {
+        $nik = Auth::guard('karyawan')->user()->nik;
+        $tgl_izin = $request->tgl_izin;
+        $status = $request->status;
+        $keterangan = $request->keterangan;
+
+        $data = [
+            'nik' => $nik,
+            'tgl_izin' => $tgl_izin,
+            'status' => $status,
+            'keterangan' => $keterangan
+     ];
+
+     $simpan = DB::table('pengajuan_izin')->insert($data);
+
+     if($simpan){
+        return redirect('/presensi/izin')->with(['success' => 'Data Berhasil Disimpan']);
+     } else {
+        return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan']);
+     }
+
      }
 }
