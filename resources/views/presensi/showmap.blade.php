@@ -20,7 +20,7 @@
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 1000
+                radius: 40000
             }).addTo(map);
 
     var popup = L.popup()

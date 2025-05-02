@@ -123,7 +123,7 @@
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
             <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
             <div class="d-none d-xl-block ps-2">
-              <div>Paweł Kuna</div>
+              <div>Dennis Hilmansyah</div>
               <div class="mt-1 small text-secondary">UI Designer</div>
             </div>
           </a>
@@ -208,7 +208,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/karyawan">
+                  <a class="dropdown-item" href="/presensi/laporan">
                     Presensi
                   </a>
                   <a class="dropdown-item" href="/departemen">

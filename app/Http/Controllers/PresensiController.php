@@ -60,7 +60,7 @@ class PresensiController extends Controller
             'lokasi_in' => $lokasi
         ];
         
-        if($radius > 1000){
+        if($radius > 40000){
             echo "error|Maaf Anda Berada di Luar Radius Kantor, Jarak Anda " . $radius . " meter dari kantor|radius";
         }else{
             if($cek > 0){
@@ -235,5 +235,33 @@ class PresensiController extends Controller
             ->join('karyawan', 'presensi.nik', '=', 'karyawan.nik')
             ->first();
         return view('presensi.showmap', compact('presensi'));
+     }
+
+     public function laporan()
+     {
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", 
+        "November", "Desember"];
+        $karyawan = DB::table('karyawan')->orderBy('nama_lengkap')->get();
+        return view('presensi.laporan', compact('namabulan', 'karyawan'));
+     }
+
+     public function cetaklaporan(Request $request)
+     {
+        $nik = $request->nik;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", 
+        "November", "Desember"];
+        $karyawan = DB::table('karyawan')->where('nik', $nik)
+            ->join('departemen', 'karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->first();
+
+        $presensi = DB::table('presensi')
+            ->where('nik', $nik)
+            ->whereRaw('MONTH(tgl_presensi)="' . $bulan . '"')
+            ->whereRaw('YEAR(tgl_presensi)="' . $tahun . '"')
+            ->orderBy('tgl_presensi')
+            ->get();
+        return view('presensi.cetaklaporan', compact('bulan', 'tahun', 'namabulan' , 'karyawan' , 'presensi'));
      }
 }
