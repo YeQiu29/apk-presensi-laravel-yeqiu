@@ -211,8 +211,32 @@
                   <a class="dropdown-item" href="/presensi/laporan">
                     Presensi
                   </a>
-                  <a class="dropdown-item" href="/departemen">
+                  <a class="dropdown-item" href="/presensi/rekap">
                     Rekap Presensi
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-current-location">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M12 1a1 1 0 0 1 1 1v1.055a9.004 9.004 0 0 1 7.946 7.945h1.054a1 1 0 0 1 0 2h-1.055a9.004 9.004 0 0 1 -7.944 7.945l-.001 1.055a1 1 0 0 1 -2 
+                  0v-1.055a9.004 9.004 0 0 1 -7.945 -7.944l-1.055 -.001a1 1 0 0 1 0 -2h1.055a9.004 9.004 0 0 1 7.945 -7.945v-1.055a1 1 0 0 1 1 -1m0 4a7 7 0 1 0 0 14a7 
+                  7 0 0 0 0 -14m0 3a4 4 0 1 1 -4 4l.005 -.2a4 4 0 0 1 3.995 -3.8" />
+                </svg>
+              </span>
+              <span class="nav-link-title">
+                Konfigurasi Lokasi
+              </span>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/konfigurasi/lokasikantor">
+                    Lokasi Kantor
                   </a>
                 </div>
               </div>
