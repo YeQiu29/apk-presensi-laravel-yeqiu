@@ -192,14 +192,15 @@
           <li class="nav-item">
             <a class="nav-link" href="/presensi/izinsakit" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  
-                stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-heart-rate-monitor">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24" 
+                   fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  
+                   stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-license-off">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M3 4m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z" />
-                  <path d="M7 20h10" />
-                  <path d="M9 16v4" />
-                  <path d="M15 16v4" />
-                  <path d="M7 10h2l2 3l2 -6l1 3h3" />
+                  <path d="M15 21h-9a3 3 0 0 1 -3 -3v-1h10v2a2 2 0 1 0 4 0v-2m0 -4v-8a2 2 0 1 1 2 2h-2m2 
+                        -4h-11a3 3 0 0 0 -.864 .126m-2.014 2.025a3 3 0 0 0 -.122 .849v11" />
+                  <path d="M11 7h2" />
+                  <path d="M9 11h2" />
+                  <path d="M3 3l18 18" />
                 </svg>
               </span>
               <span class="nav-link-title">

@@ -13,6 +13,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logodennis2.png') }}" />
     <title>PT. DJEMOENDO</title>
     <!-- CSS files -->
     <link href=" {{ asset ('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet"/>

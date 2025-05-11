@@ -59,6 +59,47 @@
             format: "yyyy-mm-dd"    
         });
 
+        var tanggalIzinTerpakai = [];
+
+        $("#tgl_izin").change(function(e){
+            var tgl_izin = $(this).val();
+
+            // Cek lokal dulu biar cepat
+            if (tanggalIzinTerpakai.includes(tgl_izin)) {
+                Swal.fire({
+                    title: 'Oops !',
+                    text: 'Tanggal ini sudah kamu ajukan sebelumnya !',
+                    icon: 'warning'
+                }).then((result) => {
+                    $("#tgl_izin").val("");
+                });
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/presensi/cekpengajuanizin',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tgl_izin: tgl_izin
+                },
+                cache: false,
+                success: function(respond) {
+                    if(respond == 1){
+                        Swal.fire({
+                            title: 'Oops !',
+                            text: 'Anda Sudah Melakukan Pengajuan Izin pada Tanggal Tersebut !',
+                            icon: 'warning'
+                        }).then((result) => {
+                            $("#tgl_izin").val("");
+                        });
+                    } else {
+                        tanggalIzinTerpakai.push(tgl_izin); // simpan agar tidak dobel input
+                    }
+                }
+            });
+        });
+
         $("#frmIzin").submit(function() {
             var tgl_izin = $("#tgl_izin").val();
             var status = $("#status").val();
@@ -68,21 +109,21 @@
                     title: 'Oops !'
                     , text: 'Tanggal harus Diisi'
                     , icon: 'warning'
-                })
+                });
                 return false;
             } else if (status == "") {
                 Swal.fire({
                     title: 'Oops !'
                     , text: 'Status harus Diisi'
                     , icon: 'warning'
-                })
+                });
                 return false;
             } else if (keterangan == "") {
                 Swal.fire({
                     title: 'Oops !'
                     , text: 'Keterangan harus Diisi'
                     , icon: 'warning'
-                })
+                });
                 return false;
             }
         });
