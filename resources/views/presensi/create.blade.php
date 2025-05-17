@@ -117,41 +117,69 @@
             Webcam.snap(function(uri){
                 image = uri;
             });
-            var lokasi = $("#lokasi").val();
+            
+            // Panggil API face recognition dulu
             $.ajax({
-                type:'POST'
-                , url:'/presensi/store'
-                , data:{
-                    _token:"{{ csrf_token() }}"
-                    , image:image
-                    , lokasi:lokasi
-                }
-                , cache: false
-                , success: function(respond){
-                    var status = respond.split("|");
-                    if(status[0] == "success"){
-                        if(status[2] == "in"){
-                            notifikasi_in.play();
-                        } else {
-                            notifikasi_out.play();
-                        }
-                        Swal.fire({
-                            title: 'Success !!!'
-                            , text: status[1]
-                            , icon: 'success'
-                            //confirmButtonText: 'OK'
-                        })
-                        setTimeout("location.href='/dashboard'", 3000);
+                type: 'POST',
+                url: '/presensi/face-recognition',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    image: image,
+                    nik: "{{ Auth::guard('karyawan')->user()->nik }}"
+                },
+                success: function(respond) {
+                    if(respond.status == 'success') {
+                        // Jika face recognition sukses, lanjutkan proses absen
+                        $.ajax({
+                            type: 'POST',
+                            url: '/presensi/store',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                image: image,
+                                lokasi: $("#lokasi").val()
+                            },
+                            success: function(respond2) {
+                                var status = respond2.split("|");
+                                if(status[0] == "success") {
+                                    if(status[2] == "in") {
+                                        notifikasi_in.play();
+                                        Swal.fire({
+                                            title: 'Success !!!',
+                                            text: respond.message + ' - ' + status[1],
+                                            icon: 'success'
+                                        });
+                                    } else {
+                                        notifikasi_out.play();
+                                        Swal.fire({
+                                            title: 'Success !!!',
+                                            text: status[1],
+                                            icon: 'success'
+                                        });
+                                    }
+                                    setTimeout("location.href='/dashboard'", 3000);
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error !!!',
+                                        text: status[1],
+                                        icon: 'error'
+                                    });
+                                }
+                            }
+                        });
                     } else {
-                        if(status[2]= "radius") {
-                            notifikasi_radius.play();
-                        }
                         Swal.fire({
-                            title: 'Error !!!'
-                            , text: status[1]
-                            , icon: 'error'
-                        })
+                            title: 'Error !!!',
+                            text: respond.message,
+                            icon: 'error'
+                        });
                     }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: 'Error !!!',
+                        text: 'Gagal melakukan face recognition',
+                        icon: 'error'
+                    });
                 }
             });
         });

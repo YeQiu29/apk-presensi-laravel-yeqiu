@@ -31,6 +31,7 @@ Route::middleware(['auth:karyawan'])->group(function() {
 
     //presensi
     Route::get('/presensi/create', [PresensiController::class,'create']);
+    Route::post('/presensi/face-recognition', [PresensiController::class, 'faceRecognition']);
     Route::post('/presensi/store', [PresensiController::class, 'store']);
 
     //Edit Profile
@@ -82,4 +83,3 @@ Route::middleware(['auth:user'])->group(function(){
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class, 'lokasikantor']);
     Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class, 'updatelokasikantor']);
 });
-

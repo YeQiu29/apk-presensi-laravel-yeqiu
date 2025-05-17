@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
 use League\Flysystem\StorageAttributes;
@@ -22,6 +23,59 @@ class PresensiController extends Controller
         $cek = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nik', $nik)->count();
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
         return view('presensi.create', compact('cek', 'lok_kantor'));
+    }
+
+    public function faceRecognition(Request $request) 
+    {
+        // Validasi input
+        $request->validate([
+            'nik' => 'required',
+            'image' => 'required'
+        ]);
+
+        // Simpan sementara di storage
+        $tempPath = 'public/uploads/temp/';
+        $formatName = $request->nik . "-" . date('Y-m-d') . "-check";
+        $imageParts = explode(";base64", $request->image);
+        $imageBase64 = base64_decode($imageParts[1]);
+        $fileName = $formatName . ".png";
+        $tempFile = $tempPath . $fileName;
+        
+        FacadesStorage::put($tempFile, $imageBase64);
+
+        // Kirim ke API Python
+        $response = Http::attach(
+            'file', 
+            file_get_contents(storage_path('app/' . $tempFile)), 
+            $fileName
+        )->post('https://619c-103-109-161-114.ngrok-free.app/recognize/', [
+            'nik_input' => $request->nik
+        ]);
+
+        // Hapus file temp
+        FacadesStorage::delete($tempFile);
+
+        if ($response->successful()) {
+            $result = $response->json();
+            
+            if ($result['nik_matched']) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => $result['message'],
+                    'data' => $result
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error, wajah tidak terdeteksi'
+                ], 400);
+            }
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Gagal terhubung ke API Face Recognition'
+        ], 500);
     }
 
     public function store(Request $request)
