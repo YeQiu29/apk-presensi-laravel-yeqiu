@@ -14,9 +14,9 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logodennis2.png') }}" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/icon/logodennis2.png') }}">
     <!-- Menggunakan style.css bawaan jika ada style dasar yang ingin dipertahankan -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css?v=1.1') }}">
     <!-- CSS Kustom untuk halaman login yang baru -->
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-login-v2.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-login-v2.css?v=1.1') }}">
     <link rel="manifest" href="__manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- SweetAlert2 -->
