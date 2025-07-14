@@ -1,7 +1,7 @@
 /*
  * File: custom-login-v2.css
- * Deskripsi: Style kustom untuk halaman login yang modern dan beranimasi.
- * Versi: 3.1 (Disesuaikan untuk Mobile)
+ * Deskripsi: Style kustom untuk halaman login yang modern, beranimasi, dan responsif.
+ * Versi: 4.0 (Responsive Ready)
  */
 
 /* Mengimpor Font dari Google Fonts */
@@ -16,7 +16,7 @@
     min-height: 100vh;
     overflow: hidden;
     color: #4A5568;
-    padding: 1rem; /* Memberi ruang di sekitar konten */
+    padding: 1rem;
 }
 
 /* Wrapper Latar Belakang */
@@ -69,7 +69,6 @@
     100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
 }
 
-
 /* Kontainer Utama Login */
 #appCapsule {
     background: transparent !important;
@@ -78,15 +77,16 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    padding: 0 !important; /* Hapus padding default */
 }
 
 .login-container {
     background: rgba(255, 255, 255, 0.95);
-    padding: 1.5rem; /* Padding diperkecil */
+    padding: 1.5rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 380px; /* Lebar maksimal diperkecil */
+    max-width: 380px;
     animation: fadeInDown 0.8s ease-out;
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -99,13 +99,13 @@
 
 /* Logo Login */
 .login-logo-container {
-    margin: 0 auto 1rem auto; /* Jarak bawah diperkecil */
+    margin: 0 auto 1rem auto;
     animation: float 6s ease-in-out infinite;
 }
 
 .logo-image {
-    width: 100px; /* Ukuran logo diperkecil */
-    height: 100px; /* Ukuran logo diperkecil */
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 5px 20px rgba(76, 104, 215, 0.4);
@@ -114,35 +114,33 @@
 
 @keyframes float {
 	0% { transform: translatey(0px); }
-	50% { transform: translatey(-15px); } /* Efek mengambang diperhalus */
+	50% { transform: translatey(-15px); }
 	100% { transform: translatey(0px); }
 }
 
-
-/* Gaya Judul yang Cantik */
+/* Gaya Judul */
 .login-title-wrapper {
-    margin-bottom: 0.8rem; /* Jarak bawah diperkecil */
+    margin-bottom: 0.8rem;
     animation: textFadeIn 1s ease-out 0.2s backwards;
 }
 
 .main-title {
-    font-size: 2rem; /* Ukuran font diperkecil */
+    font-size: 1.8rem; /* Ukuran font disesuaikan */
     font-weight: 700;
     color: #1A202C;
     margin: 0;
-    line-height: 1;
+    line-height: 1.2; /* Memastikan tidak terpotong */
 }
 
 .sub-title {
-    font-size: 1.3rem; /* Ukuran font diperkecil */
+    font-size: 1.1rem; /* Ukuran font disesuaikan */
     font-weight: 400;
     color: #4c68d7;
     margin: 0;
-    margin-top: 5px; /* <- INI BAGIAN YANG SAYA TAMBAHKAN */
 }
 
 .login-subtitle {
-    font-size: 0.9rem; /* Ukuran font diperkecil */
+    font-size: 0.9rem;
     color: #718096;
     animation: textFadeIn 1s ease-out 0.4s backwards;
     margin-top: 0;
@@ -155,7 +153,7 @@
 
 /* Formulir Kustom */
 .form-group-custom {
-    margin-bottom: 1rem; /* Jarak antar form diperkecil */
+    margin-bottom: 1rem;
 }
 
 .form-group-custom .input-wrapper {
@@ -166,8 +164,8 @@
     background: #F7FAFC;
     border: 2px solid #E2E8F0;
     border-radius: 12px;
-    height: 50px; /* Tinggi input diperkecil */
-    padding-left: 45px; /* Disesuaikan dengan ikon */
+    height: 50px;
+    padding-left: 45px;
     font-size: 1rem;
     color: #2D3748;
     transition: all 0.3s ease;
@@ -185,10 +183,10 @@
 
 .input-icon {
     position: absolute;
-    left: 16px; /* Posisi ikon disesuaikan */
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px; /* Ukuran ikon diperkecil */
+    font-size: 20px;
     color: #A0AEC0;
     transition: color 0.3s ease;
 }
@@ -211,7 +209,7 @@
 
 /* Tombol Login */
 .btn-login {
-    height: 50px; /* Tinggi tombol diperkecil */
+    height: 50px;
     border-radius: 12px;
     font-size: 1rem;
     font-weight: 500;
@@ -273,4 +271,35 @@
     border-color: #ffeeba;
     color: #856404;
     border-radius: 12px;
+}
+
+/* Media Query untuk Perangkat Mobile */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1rem; /* Kurangi padding di layar kecil */
+        max-width: 100%; /* Gunakan lebar penuh */
+    }
+
+    .logo-image {
+        width: 80px; /* Perkecil logo */
+        height: 80px;
+    }
+
+    .main-title {
+        font-size: 1.6rem; /* Perkecil judul utama */
+    }
+
+    .sub-title {
+        font-size: 1rem; /* Perkecil sub-judul */
+    }
+
+    .form-group-custom .form-control {
+        height: 48px; /* Kurangi tinggi input */
+        font-size: 0.95rem;
+    }
+
+    .btn-login {
+        height: 48px; /* Kurangi tinggi tombol */
+        font-size: 0.95rem;
+    }
 }
