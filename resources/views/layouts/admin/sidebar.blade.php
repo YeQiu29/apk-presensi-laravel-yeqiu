@@ -5,7 +5,7 @@
       </button>
       <h1 class="navbar-brand navbar-brand-autodark">
         <a href=".">
-          <img src="{{ asset ('tabler/static/PT.-Djemoendo.svg') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+          <img src="{{ asset ('tabler/static/PT.-Djemoendo.svg') }}" alt="Tabler" class="navbar-brand-image" style="width: 150px !important; height: auto !important;">
         </a>
       </h1>
       <div class="navbar-nav flex-row d-lg-none">

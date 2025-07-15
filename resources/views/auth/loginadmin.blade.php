@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>PT. DJEMOENDO</title>
     <!-- CSS files -->
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logodennis2.png') }}" sizes="32x32">
     <link href="{{ asset ('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset ('tabler/dist/css/tabler-flags.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset ('tabler/dist/css/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
@@ -28,6 +28,26 @@
       }
       body {
       	font-feature-settings: "cv03", "cv04", "cv11";
+        background-image: url('{{ asset('assets/img/kantor.jpg') }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .floating-image {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
       }
     </style>
   </head>
@@ -43,7 +63,7 @@
               </div>
               <div class="card card-md">
                 <div class="card-body">
-                  <h2 class="h2 text-center mb-4">Login to your account</h2>
+                  <h2 class="h2 text-center mb-4" style="text-shadow: 2px 2px 4px #ffffff; color: black;">PT. DJEMOENDO<br>ATTENDANCE MONITORING</h2>
                   @if (Session::get('warning'))
                       <div class="alert alert-warning">
                             <p>{{ Session::get('warning') }}</p>
@@ -63,9 +83,9 @@
                         </span>
                       </label>
                       <div class="input-group input-group-flat">
-                        <input type="password" name="password" class="form-control"  placeholder="Your password"  autocomplete="off">
+                        <input type="password" name="password" class="form-control"  placeholder="Your password"  autocomplete="off" id="password-input">
                         <span class="input-group-text">
-                          <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                          <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip" id="show-password-toggle"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
                           </a>
                         </span>
@@ -86,7 +106,7 @@
             </div>
           </div>
           <div class="col-lg d-none d-lg-block">
-            <img src="{{ asset('tabler/static/illustrations/undraw_secure_login_pdn4.svg')}}" height="300" class="d-block mx-auto" alt="">
+            <img src="{{ asset('tabler/static/illustrations/undraw_secure_login_pdn4.svg')}}" height="300" class="d-block mx-auto floating-image" alt="">
           </div>
         </div>
       </div>
@@ -95,5 +115,19 @@
     <!-- Tabler Core -->
     <script src="{{ asset('tabler/dist/js/tabler.min.js?1692870487') }}" defer></script>
     <script src="{{ asset('tabler/dist/js/demo.min.js?1692870487') }}" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const passwordInput = document.getElementById('password-input');
+        const showPasswordToggle = document.getElementById('show-password-toggle');
+
+        if (showPasswordToggle) {
+          showPasswordToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+          });
+        }
+      });
+    </script>
   </body>
 </html>
