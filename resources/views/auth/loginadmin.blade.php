@@ -32,6 +32,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        overflow: hidden;
       }
 
       .floating-image {
@@ -52,18 +53,20 @@
     </style>
   </head>
   <body  class=" d-flex flex-column">
-    <script src="{{ asset ('tabler/dist/js/demo-theme.min.js?1692870487')}}"></script>
     <div class="page page-center">
-      <div class="container container-normal py-4">
+      <div class="container container-normal py-1">
         <div class="row align-items-center g-4">
           <div class="col-lg">
             <div class="container-tight">
               <div class="text-center mb-4">
                 <a href="." class="navbar-brand navbar-brand-autodark"><img src="./static/logo.svg" height="36" alt=""></a>
               </div>
-              <div class="card card-md">
+              <div class="card card-md" style="transform: scale(0.85);">
                 <div class="card-body">
-                  <h2 class="h2 text-center mb-4" style="text-shadow: 2px 2px 4px #ffffff; color: black;">PT. DJEMOENDO<br>ATTENDANCE MONITORING</h2>
+                    <div class="text-center mb-3">
+                        <img src="{{ asset('assets/img/logodennis2.png') }}" height="80" alt="logo" class="floating-image">
+                    </div>
+                  <h2 class="h2 text-center mb-3" style="text-shadow: 2px 2px 4px #ffffff; color: black; font-size: 1.2rem;">PT. DJEMOENDO<br>ATTENDANCE MONITORING</h2>
                   @if (Session::get('warning'))
                       <div class="alert alert-warning">
                             <p>{{ Session::get('warning') }}</p>
