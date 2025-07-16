@@ -59,7 +59,7 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="./settings.html" class="dropdown-item">Pengaturan</a>
+                    <a href="{{ url('/konfigurasi/editprofileadmin') }}" class="dropdown-item">Pengaturan</a>
                     <a href="/proseslogoutadmin" class="dropdown-item">Keluar</a>
                 </div>
             </div>

@@ -4,7 +4,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <h1 class="navbar-brand navbar-brand-autodark" style="margin-top: -10px; margin-bottom: -15px;">
-        <a href=".">
+        <a href="/panel/dashboardadmin">
           <img src="{{ asset ('tabler/static/PT.-Djemoendo.svg') }}" alt="Tabler" class="navbar-brand-image" style="width: 150px !important; height: auto !important;">
         </a>
       </h1>
