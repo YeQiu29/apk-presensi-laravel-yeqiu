@@ -3,7 +3,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <h1 class="navbar-brand navbar-brand-autodark">
+      <h1 class="navbar-brand navbar-brand-autodark" style="margin-top: -10px; margin-bottom: -15px;">
         <a href=".">
           <img src="{{ asset ('tabler/static/PT.-Djemoendo.svg') }}" alt="Tabler" class="navbar-brand-image" style="width: 150px !important; height: auto !important;">
         </a>
@@ -138,7 +138,7 @@
         </div>
       </div>
       <div class="collapse navbar-collapse" id="sidebar-menu">
-        <ul class="navbar-nav pt-lg-3">
+        <ul class="navbar-nav pt-lg-1">
           <li class="nav-item">
             <a class="nav-link" href="/panel/dashboardadmin" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
