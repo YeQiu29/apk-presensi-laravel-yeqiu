@@ -12,31 +12,138 @@
     </div>
     <!-- * App Header -->
     <style>
-        .webcam-capture,
-        .webcam-capture video{
-            display: inline-block;
-            width: 100% !important;
-            margin: auto;
-            height: auto !important;
+        /* Webcam Container */
+        
+        .webcam-container {
+            margin-bottom: 20px; /* Tambahkan ini */
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
             border-radius: 15px;
-
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
+        
+        .webcam-capture, 
+        .webcam-capture video {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+        
+        /* Face Guide */
+        .face-guide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .face-guide {
+            width: 50%;
+            max-width: 200px;
+            aspect-ratio: 3/4;
+            border: 2px dashed rgba(0, 255, 255, 0.5);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .face-guide::before,
+        .face-guide::after {
+            content: '';
+            position: absolute;
+            width: 12%;
+            height: 6%;
+            border: 1px solid rgba(0, 255, 255, 0.7);
+            border-radius: 50%;
+            top: 30%;
+        }
+        
+        .face-guide::before {
+            left: 25%;
+        }
+        
+        .face-guide::after {
+            right: 25%;
+        }
+        
+        .face-guide .mouth-guide {
+            position: absolute;
+            width: 25%;
+            height: 4%;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.7);
+            border-radius: 0 0 50% 50%;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Scanning Effect */
+        .scanning-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, 
+                          rgba(0, 255, 255, 0), 
+                          rgba(0, 255, 255, 0.8),
+                          rgba(0, 255, 255, 0));
+            z-index: 101;
+            animation: scan 2.5s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0.7; }
+        }
+
+        .face-dots {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(0, 255, 255, 0.8);
+            border-radius: 50%;
+            z-index: 102;
+        }
+
         #map { 
             height: 200px; 
         }
-
     </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @endsection
+
 @section('content')
-<div class="row"style="margin-top: 70px">
+<div class="row webcam-row" style="margin-top: 70px"> <!-- Tambahkan class webcam-row -->
     <div class="col">
         <input type="hidden" id="lokasi">
-        <div class="webcam-capture"></div>
+        <div class="webcam-container">
+            <div class="webcam-capture"></div>
+            <div class="face-guide-overlay">
+                <div class="face-guide">
+                    <div class="mouth-guide"></div>
+                </div>
+                <div class="scanning-line"></div>
+                <!-- Titik-titik deteksi wajah -->
+                <div class="face-dots" style="top: 30%; left: 25%;"></div>
+                <div class="face-dots" style="top: 30%; right: 25%;"></div>
+                <div class="face-dots" style="bottom: 25%; left: 50%; transform: translateX(-50%);"></div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
+
+<div class="row mt-1"> <!-- Tambahkan class button-row -->
     <div class="col">
         @if ($cek > 0)
         <button id="takeabsen" class="btn btn-danger btn-block">
@@ -52,7 +159,7 @@
         
     </div>
 </div>
-<div class="row mt-2">
+<div class="row mt-1">
     <div class="col">
         <div id="map"></div>
     </div>

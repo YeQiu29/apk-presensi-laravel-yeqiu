@@ -46,8 +46,8 @@ class KonfigurasiController extends Controller
 
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
-            $nama_foto = time() . "." . $foto->getClientOriginalExtension();
-            $tujuan_upload = 'public/uploads/profile';
+            $nama_foto = "admin_avatar.jpg";
+            $tujuan_upload = 'assets/img/admin_profile';
             $foto->move($tujuan_upload, $nama_foto);
             $user->foto = $nama_foto;
         }
