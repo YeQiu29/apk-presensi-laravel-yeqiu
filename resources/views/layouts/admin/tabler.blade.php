@@ -65,5 +65,21 @@
 
     @stack('myscript')
     
+  <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const date = now.toLocaleDateString('id-ID', options);
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const time = `${hours}:${minutes}:${seconds}`;
+
+            document.getElementById('realtime-date').textContent = date + ' ' + time;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+    </script>
   </body>
 </html>

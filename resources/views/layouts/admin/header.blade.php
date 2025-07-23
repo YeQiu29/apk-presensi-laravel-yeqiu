@@ -1,5 +1,8 @@
 <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
     <div class="container-xl">
+        {{-- Tanggal Real-time --}}
+        <div id="realtime-date" class="navbar-text"></div>
+
         {{-- Tombol Toggler (untuk mobile) --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -50,10 +53,10 @@
                 </div>
             </div>
             {{-- Profil Pengguna --}}
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+            <div class="nav-item">
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="modal" data-bs-target="#modal-photo-profile" aria-label="Lihat foto profil">
                     @if (Auth::guard('user')->user()->foto)
-                        <span class="avatar avatar-sm" style="background-image: url({{ asset('assets/img/admin_profile/' . Auth::guard('user')->user()->foto) }})"></span>
+                        <span class="avatar avatar-sm" style="background-image: url({{ asset('assets/img/admin_profile/' . Auth::guard('user')->user()->foto . '?v=' . time()) }})"></span>
                     @else
                         <span class="avatar avatar-sm" style="background-image: url({{ asset('tabler/static/avatars/005m.jpg') }} )"></span>
                     @endif
@@ -61,6 +64,12 @@
                         <div>{{ Auth::guard('user')->user()->name }}</div>
                         <div class="mt-1 small text-secondary">Administrator</div>
                     </div>
+                </a>
+            </div>
+            {{-- Tombol Pengaturan --}}
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Pengaturan pengguna">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <a href="{{ url('/konfigurasi/editprofileadmin') }}" class="dropdown-item">Pengaturan</a>
@@ -76,3 +85,14 @@
 
     </div>
 </header>
+
+<!-- Modal Foto Profil -->
+<div class="modal modal-blur fade" id="modal-photo-profile" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{ asset('assets/img/admin_profile/' . Auth::guard('user')->user()->foto . '?v=' . time()) }}" alt="Foto Profil" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>

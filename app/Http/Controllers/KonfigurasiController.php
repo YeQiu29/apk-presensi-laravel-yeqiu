@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KonfigurasiController extends Controller
 {
@@ -37,27 +39,37 @@ class KonfigurasiController extends Controller
 
     public function updateprofileadmin(Request $request)
     {
-        $request->validate([
-            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'password' => 'nullable|min:8|confirmed',
-        ]);
-
-        $user = auth()->user();
+        $user = Auth::guard('user')->user();
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
 
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $nama_foto = "admin_avatar.jpg";
-            $tujuan_upload = 'assets/img/admin_profile';
-            $foto->move($tujuan_upload, $nama_foto);
-            $user->foto = $nama_foto;
+            $foto = $user->id . "." . $request->file('foto')->getClientOriginalExtension();
+        } else {
+            $foto = $user->foto;
         }
 
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
+        $user->name = $name;
+        $user->email = $email;
+        if (!empty($password)) {
+            if ($password === $request->password_confirmation) {
+                $user->password = Hash::make($password);
+            } else {
+                return redirect()->back()->with('error', 'Password dan konfirmasi password tidak cocok.');
+            }
         }
+        $user->foto = $foto;
 
-        $user->save();
-
-        return Redirect::back()->with(['success' => 'Profil Berhasil Diupdate']);
+        try {
+            $user->save();
+            if ($request->hasFile('foto')) {
+                $folderPath = "public/assets/img/admin_profile/";
+                $request->file('foto')->storeAs($folderPath, $foto);
+            }
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui profil.');
+        }
     }
 }
