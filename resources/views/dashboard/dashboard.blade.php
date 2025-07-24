@@ -71,7 +71,7 @@
                 </div>
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="orange" style="font-size: 40px;">
+                        <a href="#" class="orange" style="font-size: 40px;" data-toggle="modal" data-target="#locationModal">
                             <ion-icon name="location"></ion-icon>
                         </a>
                     </div>
@@ -208,7 +208,7 @@
                             <div class="in">
                                 <div>{{ date("d-m-Y",strtotime($d->tgl_presensi)) }}</div>
                                 <span class="badge badge-success">{{ $d->jam_in }}</span>
-                                <span class="badge badge-danger">{{ $presensihariini !== null && $d->jam_out !== null ? $d->jam_out : 'Belum Absen' }}</span>
+                                <span class="badge badge-danger">{{ $d->jam_out !== null ? $d->jam_out : 'Belum Absen' }}</span>
                             </div>
                         </div>
                     </li>
@@ -239,4 +239,100 @@
         </div>
     </div>
 </div>
-@endsection
+<!-- Modal Lokasi -->
+<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationModalLabel">Lokasi Anda Saat Ini</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="map" style="height: 300px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('myscript')
+<script>
+    var map = null; // Declare map variable globally or in a scope accessible by the modal event
+
+    $('#locationModal').on('shown.bs.modal', function () {
+        if (map !== null) {
+            map.remove(); // Remove existing map if it was initialized before
+        }
+
+        function initializeMap() {
+            // Initialize map
+            map = L.map('map').setView([0, 0], 13); // Default view, will be updated by geolocation
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Get user's current location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    var accuracy = position.coords.accuracy;
+
+                    var latlng = L.latLng(lat, lng);
+
+                    map.setView(latlng, 16); // Set map view to user's location with higher zoom
+
+                    L.marker(latlng).addTo(map)
+                        .bindPopup("Lokasi Anda saat ini. Akurasi: " + accuracy + " meter.")
+                        .openPopup();
+
+                    L.circle(latlng, accuracy).addTo(map);
+
+                    // Invalidate size to ensure map renders correctly after modal is shown
+                    setTimeout(function() { // Keep this setTimeout for invalidateSize
+                        map.invalidateSize();
+                    }, 250);
+                }, function(error) {
+                    console.error("Error getting location: ", error);
+                    alert("Tidak dapat mengambil lokasi Anda. Pastikan Anda mengizinkan akses lokasi.");
+                    map.setView([-6.2088, 106.8456], 13); // Default to Jakarta if location fails
+                    L.marker([-6.2088, 106.8456]).addTo(map)
+                        .bindPopup("Lokasi default (Jakarta) karena gagal mengambil lokasi Anda.")
+                        .openPopup();
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            } else {
+                alert("Geolocation tidak didukung oleh browser Anda.");
+                map.setView([-6.2088, 106.8456], 13); // Default to Jakarta if geolocation not supported
+                L.marker([-6.2088, 106.8456]).addTo(map)
+                    .bindPopup("Lokasi default (Jakarta) karena Geolocation tidak didukung.")
+                    .openPopup();
+            }
+        }
+
+        // Check if L is defined, if not, wait and try again
+        var checkLeafletReady = setInterval(function() {
+            if (typeof L !== 'undefined') {
+                clearInterval(checkLeafletReady);
+                initializeMap();
+            }
+        }, 100); // Check every 100ms
+    });
+
+    // Clear map when modal is hidden to prevent issues on subsequent openings
+    $('#locationModal').on('hidden.bs.modal', function () {
+        if (map !== null) {
+            map.remove();
+            map = null;
+        }
+    });
+</script>
+@endpush

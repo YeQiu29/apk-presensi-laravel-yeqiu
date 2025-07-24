@@ -15,12 +15,20 @@ class DashboardController extends Controller
         $bulanini = date("m") * 1 ; // 2 atau Februari
         $tahunini = date("Y"); // 2025
         $presensihariini = DB::table('presensi')->where('nik',$nik)->where('tgl_presensi',$hariini)->first();
-        $historibulanini = DB::table('presensi')->whereRaw('MONTH(tgl_presensi)="'. $bulanini . '"')
+        $historibulanini = DB::table('presensi')
             ->where('nik', $nik)
             ->whereRaw('MONTH(tgl_presensi)="' . $bulanini . '"')
             ->whereRaw('YEAR(tgl_presensi)="' . $tahunini . '"')
             ->orderBy('tgl_presensi')
             ->get();
+
+        // Tambahkan logika untuk memastikan jam_out diambil dengan benar
+        foreach ($historibulanini as $key => $h) {
+            $cek = DB::table('presensi')->where('tgl_presensi', $h->tgl_presensi)->where('nik', $nik)->first();
+            if ($cek->jam_out == null) {
+                $historibulanini[$key]->jam_out = 'Belum Absen';
+            }
+        }
 
         $rekappresensi = DB::table('presensi')
             ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:00",1,0)) as jmlterlambat')
