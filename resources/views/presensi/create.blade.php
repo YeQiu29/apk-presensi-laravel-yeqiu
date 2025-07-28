@@ -265,6 +265,9 @@
                                     }
                                     setTimeout("location.href='/dashboard'", 3000);
                                 } else {
+                                    if (status[2] == "radius") {
+                                        notifikasi_radius.play();
+                                    }
                                     Swal.fire({
                                         title: 'Error !!!',
                                         text: status[1],
