@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\PendaftaranWajahController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -86,4 +87,12 @@ Route::middleware(['auth:user'])->group(function(){
     //Edit Profile Admin
     Route::get('/konfigurasi/editprofileadmin', [KonfigurasiController::class, 'editprofileadmin']);
     Route::post('/konfigurasi/updateprofileadmin', [KonfigurasiController::class, 'updateprofileadmin']);
+
+    //Pendaftaran Wajah
+    Route::get('/admin/pendaftaran-wajah', [PendaftaranWajahController::class, 'index']);
+    Route::post('/admin/pendaftaran-wajah/upload', [PendaftaranWajahController::class, 'upload']);
+
+    Route::get('/infophp', function () {
+    phpinfo();
+});
 });

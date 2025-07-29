@@ -5,7 +5,7 @@
       </button>
       <h1 class="navbar-brand navbar-brand-autodark" style="margin-top: -10px; margin-bottom: -15px;">
         <a href="/panel/dashboardadmin">
-          <img src="{{ asset ('tabler/static/PT.-Djemoendo.svg') }}" alt="Tabler" class="navbar-brand-image" style="width: 150px !important; height: auto !important;">
+          <img src="{{ asset('tabler/static/PT.-Djemoendo.svg') }}" alt="Tabler" class="navbar-brand-image" style="width: 150px !important; height: auto !important;">
         </a>
       </h1>
       <div class="navbar-nav flex-row d-lg-none">
@@ -174,7 +174,17 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('presensi/monitoring') ? 'active' :'' }}" href="/presensi/monitoring" >
+            <a class="nav-link {{ request()->is('admin/pendaftaran-wajah') ? 'active' : '' }}" href="/admin/pendaftaran-wajah" >
+              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>
+              </span>
+              <span class="nav-link-title">
+                Pendaftaran Wajah
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ request()->is('presensi/monitoring') ? 'active' : '' }}" href="/presensi/monitoring" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  
                 stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-heart-rate-monitor">
@@ -192,7 +202,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('presensi/izinsakit') ? 'active' :'' }}" href="/presensi/izinsakit" >
+            <a class="nav-link {{ request()->is('presensi/izinsakit') ? 'active' : '' }}" href="/presensi/izinsakit" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24" 
                    fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  
