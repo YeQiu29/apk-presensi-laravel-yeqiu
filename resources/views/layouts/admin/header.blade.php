@@ -23,30 +23,59 @@
                     {{-- Notifikasi --}}
                     <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                        @if($pending_requests->count() > 0)
                         <span class="badge bg-red"></span>
+                        @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Pembaruan Terakhir</h3>
+                                <h3 class="card-title">Notifikasi</h3>
                             </div>
                             <div class="list-group list-group-flush list-group-hoverable">
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
-                                        <div class="col text-truncate">
-                                            <a href="#" class="text-body d-block">Contoh 1</a>
-                                            <div class="d-block text-secondary text-truncate mt-n1">
-                                                Change deprecated html tags to text decoration classes (#29604)
+                                @if($pending_requests->count() > 0)
+                                    <div class="list-group-header">Pengajuan Izin/Sakit</div>
+                                    @foreach($pending_requests as $d)
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                                            <div class="col text-truncate">
+                                                <a href="{{ url('/presensi/izinsakit') }}" class="text-body d-block">{{ $d->nama_lengkap }}</a>
+                                                <div class="d-block text-secondary text-truncate mt-n1">
+                                                    Pengajuan {{ $d->status == 'i' ? 'Izin' : 'Sakit' }} tanggal {{ date('d-m-Y', strtotime($d->tgl_izin)) }}
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            </a>
+                                    </div>
+                                    @endforeach
+                                @endif
+
+                                @if($late_employees->count() > 0)
+                                    <div class="list-group-header">Keterlambatan Hari Ini</div>
+                                    @foreach($late_employees as $d)
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><span class="status-dot bg-warning d-block"></span></div>
+                                            <div class="col text-truncate">
+                                                <a href="{{ url('/presensi/monitoring') }}" class="text-body d-block">{{ $d->nama_lengkap }}</a>
+                                                <div class="d-block text-secondary text-truncate mt-n1">
+                                                    Terlambat, masuk pukul {{ $d->jam_in }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                @endif
+
+                                @if($pending_requests->count() == 0 && $late_employees->count() == 0)
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col text-truncate">
+                                            <div class="text-body d-block">Tidak ada notifikasi baru</div>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

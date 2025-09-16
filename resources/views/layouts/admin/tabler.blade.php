@@ -81,5 +81,22 @@
         setInterval(updateTime, 1000);
         updateTime(); // Initial call
     </script>
+    <script>
+      // Script to set active class on sidebar menu
+      $(document).ready(function () {
+          var currentUrl = window.location.href;
+          $('.sidebar-menu a').each(function () {
+              var linkUrl = $(this).attr('href');
+              if (currentUrl.indexOf(linkUrl) > -1) {
+                  $(this).addClass('active');
+                  // If it's a dropdown item, open the dropdown
+                  if ($(this).closest('.dropdown-menu').length) {
+                      $(this).closest('.dropdown-menu').addClass('show');
+                      $(this).closest('.nav-item.dropdown').find('.nav-link.dropdown-toggle').addClass('active');
+                  }
+              }
+          });
+      });
+    </script>
   </body>
 </html>

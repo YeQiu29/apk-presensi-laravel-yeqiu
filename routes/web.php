@@ -82,7 +82,10 @@ Route::middleware(['auth:user'])->group(function(){
 
     //Konfigurasi Lokasi Kantor
     Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class, 'lokasikantor']);
-    Route::post('/konfigurasi/updatelokasikantor',[KonfigurasiController::class, 'updatelokasikantor']);
+    Route::post('/konfigurasi/lokasi/store', [KonfigurasiController::class, 'store']);
+    Route::post('/konfigurasi/lokasi/edit', [KonfigurasiController::class, 'edit']);
+    Route::post('/konfigurasi/lokasi/{id}/update', [KonfigurasiController::class, 'update']);
+    Route::post('/konfigurasi/lokasi/{id}/delete', [KonfigurasiController::class, 'delete']);
 
     //Edit Profile Admin
     Route::get('/konfigurasi/editprofileadmin', [KonfigurasiController::class, 'editprofileadmin']);
@@ -91,6 +94,13 @@ Route::middleware(['auth:user'])->group(function(){
     //Pendaftaran Wajah
     Route::get('/admin/pendaftaran-wajah', [PendaftaranWajahController::class, 'index']);
     Route::post('/admin/pendaftaran-wajah/upload', [PendaftaranWajahController::class, 'upload']);
+
+    //Kantor Cabang
+    Route::get('/cabang', [App\Http\Controllers\CabangController::class, 'index']);
+    Route::post('/cabang/store', [App\Http\Controllers\CabangController::class, 'store']);
+    Route::post('/cabang/edit', [App\Http\Controllers\CabangController::class, 'edit']);
+    Route::post('/cabang/{kode_cabang}/update', [App\Http\Controllers\CabangController::class, 'update']);
+    Route::post('/cabang/{kode_cabang}/delete', [App\Http\Controllers\CabangController::class, 'delete']);
 
     Route::get('/infophp', function () {
     phpinfo();

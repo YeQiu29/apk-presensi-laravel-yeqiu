@@ -199,22 +199,24 @@
         function successCallback(position){
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 14);
-            var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
-            var lok = lokasi_kantor.split(",");
-            var lat_kantor = lok[0];
-            var long_kantor = lok[1];
-            var radius = "{{ $lok_kantor->radius }}";
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([lat_kantor, long_kantor], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: radius
-            }).addTo(map);
+                var all_locations = {!! json_encode($all_locations) !!};
+
+    all_locations.forEach(function(loc) {
+        var lok = loc.lokasi_kantor.split(",");
+        var lat = lok[0];
+        var long = lok[1];
+        var radius = loc.radius;
+
+        var circle = L.circle([lat, long], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: radius
+        }).addTo(map);
+    });
         }
 
         function errorCallback(){

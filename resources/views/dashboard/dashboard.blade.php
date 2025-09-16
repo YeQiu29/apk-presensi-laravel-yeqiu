@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div class="section" id="menu-section">
+<div class="section mt-2" id="menu-section">
     <div class="card">
         <div class="card-body text-center">
             <div class="list-menu">

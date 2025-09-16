@@ -21,8 +21,8 @@ class PresensiController extends Controller
         $hariini = date("Y-m-d");
         $nik = Auth::guard('karyawan')->user()->nik;
         $cek = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nik', $nik)->count();
-        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
-        return view('presensi.create', compact('cek', 'lok_kantor'));
+        $all_locations = DB::table('konfigurasi_lokasi')->get();
+        return view('presensi.create', compact('cek', 'all_locations'));
     }
 
     public function faceRecognition(Request $request) 
@@ -48,7 +48,7 @@ class PresensiController extends Controller
             'file', 
             file_get_contents(storage_path('app/' . $tempFile)), 
             $fileName
-        )->post('https://9efed2fb8ad9.ngrok-free.app/recognize/', [
+        )->post('https://aacffabcdebc.ngrok-free.app/recognize/', [
             'nik_input' => $request->nik
         ]);
 
@@ -83,18 +83,28 @@ class PresensiController extends Controller
         $nik = Auth::guard('karyawan')->user()->nik;
         $tgl_presensi = date("Y-m-d");
         $jam = date("H:i:s");
-        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
-        $lok = explode(",", $lok_kantor->lokasi_kantor);
-        $latitudekantor = $lok[0];
-        $longitudekantor = $lok[1];
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
 
-        $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
-        $radius = round($jarak["meters"]);
+        $all_offices = DB::table('konfigurasi_lokasi')->get();
 
+        $absen_di_lokasi = false;
+
+        foreach ($all_offices as $office) {
+            $lok = explode(",", $office->lokasi_kantor);
+            $latitudekantor = $lok[0];
+            $longitudekantor = $lok[1];
+
+            $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
+            $radius = round($jarak["meters"]);
+
+            if ($radius <= $office->radius) {
+                $absen_di_lokasi = true;
+                break;
+            }
+        }
 
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->count();
 
@@ -110,16 +120,9 @@ class PresensiController extends Controller
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
         $file = $folderPath . $fileName;
-        $data = [
-            'nik' => $nik,
-            'tgl_presensi' => $tgl_presensi,
-            'jam_in' => $jam,
-            'foto_in' => $fileName,
-            'lokasi_in' => $lokasi
-        ];
         
-        if($radius > $lok_kantor->radius){
-            echo "error|Maaf Anda Berada di Luar Radius Kantor, Jarak Anda " . $radius . " meter dari kantor|radius";
+        if(!$absen_di_lokasi){
+            echo "error|Maaf Anda Berada di Luar Radius Kantor|radius";
         }else{
             if($cek > 0){
                 $data_pulang = [
@@ -416,7 +419,7 @@ class PresensiController extends Controller
             $query->where('status_approved', $request->status_approved);
         }
         $query->orderBy('tgl_izin','desc');
-        $izinsakit = $query->paginate(2);
+        $izinsakit = $query->paginate(5); // halaman website admin menu Pengajuan Izin / Sakit
         $izinsakit->appends($request->all());
         return view('presensi.izinsakit', compact('izinsakit'));
      }

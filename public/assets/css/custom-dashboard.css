@@ -1,0 +1,29 @@
+/* Custom Dashboard Styles */
+
+#user-section {
+    padding-top: 20px; /* Add some padding to the top of the user section */
+}
+
+.dashboard-company-header {
+    text-align: center;
+    margin-bottom: 15px; /* Space between company info and user profile */
+}
+
+.dashboard-company-header .company-logo {
+    max-height: 40px; /* Control logo size to be smaller */
+    margin-bottom: 10px;
+}
+
+.dashboard-company-header .company-name-wrapper {
+    background-color: #ffc107; /* Yellow color */
+    border-radius: 50px; /* Oval shape */
+    display: inline-block;
+    padding: 5px 18px; /* Smaller padding */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.dashboard-company-header .company-name {
+    font-size: 0.9rem; /* Smaller font size */
+    font-weight: 600;
+    color: #212529;
+}
