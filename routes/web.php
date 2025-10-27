@@ -86,6 +86,8 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/konfigurasi/lokasi/edit', [KonfigurasiController::class, 'edit']);
     Route::post('/konfigurasi/lokasi/{id}/update', [KonfigurasiController::class, 'update']);
     Route::post('/konfigurasi/lokasi/{id}/delete', [KonfigurasiController::class, 'delete']);
+    Route::get('/konfigurasi/saldocuti', [KonfigurasiController::class, 'saldocuti']);
+    Route::post('/konfigurasi/saldocuti/update', [KonfigurasiController::class, 'updatesaldocuti']);
 
     //Edit Profile Admin
     Route::get('/konfigurasi/editprofileadmin', [KonfigurasiController::class, 'editprofileadmin']);

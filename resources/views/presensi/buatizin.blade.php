@@ -52,6 +52,7 @@
 @endsection
 @push('myscript')
     <script>
+        var saldo_cuti = {{ $saldo_cuti }};
         var currYear = (new Date()).getFullYear();
 
         $(document).ready(function() {
@@ -104,6 +105,16 @@
             var tgl_izin = $("#tgl_izin").val();
             var status = $("#status").val();
             var keterangan = $("#keterangan").val();
+
+            if (status == "i" && saldo_cuti <= 0) {
+                Swal.fire({
+                    title: 'Oops !',
+                    text: 'Maaf, jatah cuti anda telah habis',
+                    icon: 'warning'
+                });
+                return false;
+            }
+
             if (tgl_izin == ""){
                 Swal.fire({
                     title: 'Oops !'

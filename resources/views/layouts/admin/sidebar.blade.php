@@ -199,8 +199,8 @@
               </span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {{ request()->is('presensi/izinsakit') ? 'active' : '' }}" href="/presensi/izinsakit" >
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-izinsakit" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24" 
                    fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  
@@ -217,6 +217,18 @@
                 Pengajuan Izin / Sakit
               </span>
             </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/presensi/izinsakit">
+                    Info Izin / Sakit
+                  </a>
+                  <a class="dropdown-item" href="/konfigurasi/saldocuti">
+                    Info Saldo Cuti
+                  </a>
+                </div>
+              </div>
+            </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle {{ request()->is(['presensi/laporan','presensi/rekap']) ? 'show' : '' }}" 

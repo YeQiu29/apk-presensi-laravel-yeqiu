@@ -15,6 +15,9 @@
 @section('content')
 <div class="row" style="margin-top: 70px">
     <div class="col">
+        <div class="alert alert-info mb-2">
+            Saldo Cuti: {{ $saldo_cuti }}
+        </div>
         @php
             $messagesuccess = Session::get('success');
             $messageerror = Session::get('error');

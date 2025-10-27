@@ -78,4 +78,30 @@ class KonfigurasiController extends Controller
     {
         // Logika untuk update profil admin
     }
+
+    public function saldocuti(Request $request)
+    {
+        $query = DB::table('karyawan')->orderBy('nama_lengkap');
+
+        if ($request->has('nama_karyawan') && !empty($request->nama_karyawan)) {
+            $query->where('nama_lengkap', 'like', '%' . $request->nama_karyawan . '%');
+        }
+
+        $karyawan = $query->paginate(5);
+
+        return view('konfigurasi.saldocuti', compact('karyawan'));
+    }
+
+    public function updatesaldocuti(Request $request)
+    {
+        $nik = $request->nik;
+        $saldo_cuti = $request->saldo_cuti;
+
+        try {
+            DB::table('karyawan')->where('nik', $nik)->update(['saldo_cuti' => $saldo_cuti]);
+            return Redirect::back()->with(['success' => 'Saldo Cuti Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Saldo Cuti Gagal Diupdate']);
+        }
+    }
 }

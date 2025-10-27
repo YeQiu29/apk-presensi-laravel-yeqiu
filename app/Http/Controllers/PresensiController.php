@@ -239,13 +239,15 @@ class PresensiController extends Controller
      public function izin()
      {
         $nik = Auth::guard('karyawan')->user()->nik;
+        $saldo_cuti = Auth::guard('karyawan')->user()->saldo_cuti;
         $dataizin = DB::table('pengajuan_izin')->where('nik',$nik)->get();
-        return view('presensi.izin', compact('dataizin'));
+        return view('presensi.izin', compact('dataizin','saldo_cuti'));
      }
 
      public function buatizin()
      {
-        return view('presensi.buatizin');
+        $saldo_cuti = Auth::guard('karyawan')->user()->saldo_cuti;
+        return view('presensi.buatizin', compact('saldo_cuti'));
      }
      public function storeizin(Request $request)
      {
@@ -253,6 +255,13 @@ class PresensiController extends Controller
         $tgl_izin = $request->tgl_izin;
         $status = $request->status;
         $keterangan = $request->keterangan;
+
+        if ($status == 'i') {
+            $saldo_cuti = Auth::guard('karyawan')->user()->saldo_cuti;
+            if ($saldo_cuti <= 0) {
+                return redirect('/presensi/izin')->with(['error' => 'Maaf, jatah cuti anda telah habis']);
+            }
+        }
 
         $data = [
             'nik' => $nik,
@@ -427,13 +436,34 @@ class PresensiController extends Controller
      public function approveizinsakit(Request $request){
         $status_approved = $request->status_approved;
         $id_izinsakit_form = $request->id_izinsakit_form;
-        $update = DB::table('pengajuan_izin')->where('id',$id_izinsakit_form)->update([
-            'status_approved' => $status_approved
-        ]);
-        if($update){
-            return Redirect::back()->with(['success' => 'Data berhasil di Update']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+
+        DB::beginTransaction();
+        try {
+            $pengajuan = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->first();
+
+            if (!$pengajuan) {
+                throw new \Exception('Data pengajuan tidak ditemukan');
+            }
+
+            // Lakukan update status approval
+            DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
+                'status_approved' => $status_approved
+            ]);
+
+            // Cek jika status adalah 'approved' (1) dan jenisnya adalah 'izin' (i)
+            if ($status_approved == 1 && $pengajuan->status == 'i') {
+                $karyawan = DB::table('karyawan')->where('nik', $pengajuan->nik)->first();
+                if ($karyawan && $karyawan->saldo_cuti > 0) {
+                    DB::table('karyawan')->where('nik', $pengajuan->nik)->decrement('saldo_cuti');
+                }
+            }
+
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data berhasil diupdate']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data gagal diupdate: ' . $e->getMessage()]);
         }
      }
 
