@@ -56,6 +56,7 @@
                 <span class="badge bg-success text-white">Tepat Waktu</span>
             @endif
         </td>
+
         <td>
             <a href="#" class="btn btn-primary tampilkanpeta" id="{{ $d->id }}">
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  
@@ -92,21 +93,9 @@
         });
 
         $(".tampilkanfotopeta").click(function(e){
-            var id = $(this).attr("id");
             var foto = $(this).find('img').attr('src');
-            $.ajax({
-                type:'POST',
-                url:'/tampilkanpeta',
-                data: {
-                    _token: "{{ csrf_token() }}"
-                    , id: id
-                },
-                cache: false,
-                success:function(respond){
-                    var html = `<div class="row"><div class="col-6"><img src="${foto}" class="img-fluid"></div><div class="col-6">${respond}</div></div>`;
-                    $("#loadfotopeta").html(html);
-                }
-            });
+            var html = `<img src="${foto}" class="img-fluid">`;
+            $("#loadfotopeta").html(html);
             $("#modal-fotopeta").modal("show");
         });
     });

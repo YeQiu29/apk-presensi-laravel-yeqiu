@@ -52,6 +52,7 @@
                                             <th>Jam Pulang</th>
                                             <th>Foto</th>
                                             <th>Keterangan</th>
+                                            <th>Lokasi</th>
                                             <th></th>                                       
                                         </tr>
                                     </thead>
@@ -82,7 +83,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Foto dan Lokasi Presensi</h5>
+          <h5 class="modal-title">Foto Absensi</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <div class="modal-body" id="loadfotopeta">
