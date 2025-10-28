@@ -6,7 +6,7 @@
 
 <div id="map"></div>
 <script>
-    var lokasi = "{{ $presensi->lokasi_in }}";
+    var lokasi = "{{ $presensi->lokasi_out ?? $presensi->lokasi_in }}";
     var lok = lokasi.split(",");
     var latitude = lok[0];
     var longitude = lok[1];

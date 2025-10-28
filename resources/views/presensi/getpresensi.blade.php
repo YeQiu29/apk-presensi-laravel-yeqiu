@@ -26,12 +26,16 @@
         <td>{{ $d->nama_dept }}</td>
         <td>{{ $d->jam_in }}</td>
         <td>
-            <img src="{{ url($foto_in) }}" class="avatar" alt="">
+            <a href="#" class="tampilkanfotopeta" id="{{ $d->id }}">
+                <img src="{{ url($foto_in) }}" class="avatar" alt="">
+            </a>
         </td>
         <td>{!! $d->jam_out !== null ? $d->jam_out : '<span class="badge bg-danger text-white">Belum Absen</span>' !!}</td>
         <td>
             @if ($d->jam_out !== null)
-                <img src="{{ url($foto_out) }}" class="avatar" alt="">
+                <a href="#" class="tampilkanfotopeta" id="{{ $d->id }}">
+                    <img src="{{ url($foto_out) }}" class="avatar" alt="">
+                </a>
             @else
             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  
                 stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hourglass-high">
@@ -85,6 +89,25 @@
                 }
             });
             $("#modal-tampilkanpeta").modal("show");
+        });
+
+        $(".tampilkanfotopeta").click(function(e){
+            var id = $(this).attr("id");
+            var foto = $(this).find('img').attr('src');
+            $.ajax({
+                type:'POST',
+                url:'/tampilkanpeta',
+                data: {
+                    _token: "{{ csrf_token() }}"
+                    , id: id
+                },
+                cache: false,
+                success:function(respond){
+                    var html = `<div class="row"><div class="col-6"><img src="${foto}" class="img-fluid"></div><div class="col-6">${respond}</div></div>`;
+                    $("#loadfotopeta").html(html);
+                }
+            });
+            $("#modal-fotopeta").modal("show");
         });
     });
 </script>
