@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class KonfigurasiController extends Controller
 {
@@ -71,12 +73,50 @@ class KonfigurasiController extends Controller
     // Metode untuk profil admin tetap ada
     public function editprofileadmin()
     {
-        // Logika untuk edit profil admin
+        $admin = auth()->user();
+        return view('konfigurasi.editprofileadmin', compact('admin'));
     }
 
     public function updateprofileadmin(Request $request)
     {
-        // Logika untuk update profil admin
+        $admin = auth()->user();
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $admin->id,
+            'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'password' => 'nullable|min:6|confirmed',
+        ]);
+
+        try {
+            $admin->name = $request->name;
+            $admin->email = $request->email;
+
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $filename = date('Y-m-d') . '-' . $photo->getClientOriginalName();
+                $photo->storeAs('public/uploads/profile', $filename);
+
+                // Delete old photo
+                if ($admin->photo) {
+                    Storage::delete('public/uploads/profile/' . $admin->photo);
+                }
+
+                $admin->photo = $filename;
+            }
+
+            if ($request->password) {
+                if (!Hash::check($request->old_password, $admin->password)) {
+                    return Redirect::back()->with(['warning' => 'Password Lama Salah']);
+                }
+                $admin->password = bcrypt($request->password);
+            }
+
+            $admin->save();
+
+            return Redirect::back()->with(['success' => 'Profil Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Profil Gagal Diupdate']);
+        }
     }
 
     public function saldocuti(Request $request)

@@ -199,6 +199,7 @@
         function successCallback(position){
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 14);
+            L.marker([position.coords.latitude, position.coords.longitude]).addTo(map).bindPopup("{{ Auth::guard('karyawan')->user()->nama_lengkap }}");
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);

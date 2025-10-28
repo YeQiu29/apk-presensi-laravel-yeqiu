@@ -1,11 +1,16 @@
+
 @extends('layouts.admin.tabler')
 @section('content')
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row g-2 align-items-center">
             <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Konfigurasi
+                </div>
                 <h2 class="page-title">
-                    Pengaturan Profil
+                    Edit Profile Admin
                 </h2>
             </div>
         </div>
@@ -14,42 +19,73 @@
 <div class="page-body">
     <div class="container-xl">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-                        <form action="{{ url('/konfigurasi/updateprofileadmin') }}" method="POST" enctype="multipart/form-data">
+                        <form action="/konfigurasi/updateprofileadmin" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label class="form-label">Foto Profil</label>
-                                <input type="file" name="foto" class="form-control">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="name">Nama</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ $admin->name }}">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nama</label>
-                                <input type="text" name="name" class="form-control" value="{{ Auth::guard('user')->user()->name }}">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ $admin->email }}">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ Auth::guard('user')->user()->email }}">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="photo">Foto Profil</label>
+                                        <input type="file" class="form-control" id="photo" name="photo">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Password Baru</label>
-                                <input type="password" name="password" class="form-control" placeholder="Masukkan password baru">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <img src="{{ asset('storage/uploads/profile/' . $admin->photo) }}" alt="" class="img-fluid" width="100">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Konfirmasi Password</label>
-                                <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi password baru">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="old_password">Password Lama</label>
+                                        <input type="password" class="form-control" id="old_password" name="old_password">
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="password">Password Baru</label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="password_confirmation">Konfirmasi Password Baru</label>
+                                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
