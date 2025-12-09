@@ -16,11 +16,18 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     var marker = L.marker([latitude, longitude]).addTo(map);
-    var circle = L.circle([-7.3622591, 112.762182], {
+
+    var lokasi_kantor = "{{ $lokasi_kantor->lokasi_kantor }}";
+    var lok_kantor = lokasi_kantor.split(",");
+    var lat_kantor = lok_kantor[0];
+    var long_kantor = lok_kantor[1];
+    var radius = "{{ $lokasi_kantor->radius }}";
+
+    var circle = L.circle([lat_kantor, long_kantor], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 1000
+                radius: radius
             }).addTo(map);
 
     var popup = L.popup()

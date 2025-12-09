@@ -304,7 +304,8 @@ class PresensiController extends Controller
         $presensi = DB::table('presensi')->where('id', $id)
             ->join('karyawan', 'presensi.nik', '=', 'karyawan.nik')
             ->first();
-        return view('presensi.showmap', compact('presensi'));
+        $lokasi_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
+        return view('presensi.showmap', compact('presensi', 'lokasi_kantor'));
      }
 
      public function laporan()
