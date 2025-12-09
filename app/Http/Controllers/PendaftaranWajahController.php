@@ -61,7 +61,7 @@ class PendaftaranWajahController extends Controller
             // !!! PENTING: GANTI DENGAN URL NGROK ANDA YANG AKTIF !!!
             $response = Http::timeout(300) // Timeout 5 menit untuk proses upload & training
                 ->asMultipart()
-                ->post('https://aacffabcdebc.ngrok-free.app/upload/', $multiparts);
+                ->post('https://63b9ae67068f.ngrok-free.app/upload/', $multiparts);
 
             Log::info('Menerima respons dari API Python. Status: ' . $response->status());
 

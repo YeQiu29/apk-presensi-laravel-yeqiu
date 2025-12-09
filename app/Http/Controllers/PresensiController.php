@@ -48,7 +48,7 @@ class PresensiController extends Controller
             'file', 
             file_get_contents(storage_path('app/' . $tempFile)), 
             $fileName
-        )->post('https://aacffabcdebc.ngrok-free.app/recognize/', [
+        )->post('https://63b9ae67068f.ngrok-free.app/recognize/', [
             'nik_input' => $request->nik
         ]);
 
