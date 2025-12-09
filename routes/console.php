@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
+use App\Console\Commands\AutoCheckout;
 use App\Console\Commands\ResetCutiTahunan;
 
 Artisan::command('inspire', function () {
@@ -10,3 +11,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command(ResetCutiTahunan::class)->yearlyOn(1, 1, '00:00');
+Schedule::command(AutoCheckout::class)->dailyAt('23:59');

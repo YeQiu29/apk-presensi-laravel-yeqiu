@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('presensi', function (Blueprint $table) {
+            $table->string('status_checkout')->nullable()->after('jam_out');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sessions');
+        Schema::table('presensi', function (Blueprint $table) {
+            $table->dropColumn('status_checkout');
+        });
     }
 };

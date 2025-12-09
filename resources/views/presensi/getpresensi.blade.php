@@ -30,7 +30,17 @@
                 <img src="{{ url($foto_in) }}" class="avatar" alt="">
             </a>
         </td>
-        <td>{!! $d->jam_out !== null ? $d->jam_out : '<span class="badge bg-danger text-white">Belum Absen</span>' !!}</td>
+        <td>
+            @if ($d->jam_out !== null)
+                {{ $d->jam_out }}
+                @if ($d->status_checkout == 'auto')
+                    <br>
+                    <span class="text-danger"><b><u>[checkout otomatis]</u></b></span>
+                @endif
+            @else
+                <span class="badge bg-danger text-white">Belum Absen</span>
+            @endif
+        </td>
         <td>
             @if ($d->jam_out !== null)
                 <a href="#" class="tampilkanfotopeta" id="{{ $d->id }}">
