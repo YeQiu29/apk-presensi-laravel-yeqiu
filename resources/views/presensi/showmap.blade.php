@@ -8,7 +8,7 @@
 <div id="map"></div>
 
 <script>
-    // 1. Ambil data lokasi user
+    // 1. Ambil data lokasi user (Masuk atau Pulang)
     var lokasi = "{{ $presensi->lokasi_out ?? $presensi->lokasi_in }}";
     var lok = lokasi.split(",");
     var latitude = lok[0];
@@ -22,32 +22,33 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // 3. TAMPILKAN MARKER (PIN) LANGSUNG
-    // Marker langsung ditambahkan ke peta saat dimuat.
-    // .bindPopup() akan membuat popup nama muncul otomatis HANYA saat marker diklik.
+    // 3. TAMPILKAN MARKER USER (PIN)
     var marker = L.marker([latitude, longitude])
         .addTo(map)
         .bindPopup("{{ $presensi->nama_lengkap }}");
 
-    // 4. Tampilkan Radius Kantor (Lingkaran Merah)
-    var lokasi_kantor = "{{ $lokasi_kantor->lokasi_kantor }}";
-    var lok_kantor = lokasi_kantor.split(",");
-    var lat_kantor = lok_kantor[0];
-    var long_kantor = lok_kantor[1];
-    var radius = "{{ $lokasi_kantor->radius }}";
+    // 4. TAMPILKAN RADIUS SEMUA KANTOR CABANG
+    // Kita looping data $cabang yang dikirim dari controller
+    @foreach ($cabang as $loc)
+        var lokasi_kantor_{{ $loop->iteration }} = "{{ $loc->lokasi_kantor }}";
+        var split_loc_{{ $loop->iteration }} = lokasi_kantor_{{ $loop->iteration }}.split(",");
+        var lat_kantor_{{ $loop->iteration }} = split_loc_{{ $loop->iteration }}[0];
+        var long_kantor_{{ $loop->iteration }} = split_loc_{{ $loop->iteration }}[1];
+        var radius_{{ $loop->iteration }} = "{{ $loc->radius }}";
 
-    var circle = L.circle([lat_kantor, long_kantor], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: radius
-    }).addTo(map);
+        L.circle([lat_kantor_{{ $loop->iteration }}, long_kantor_{{ $loop->iteration }}], {
+            color: 'red',       // Warna garis
+            fillColor: '#f03',  // Warna isi
+            fillOpacity: 0.5,   // Transparansi
+            radius: radius_{{ $loop->iteration }}
+        }).addTo(map)
+        .bindPopup("{{ $loc->nama_lokasi }}"); 
+    @endforeach
 
-    // 5. Fix Bug Peta Abu-abu (PENTING)
-    // Tetap diperlukan karena peta ada di dalam Modal
+    // 5. FIX BUG PETA (Agar tidak abu-abu dan posisi pas)
     setTimeout(function() {
         map.invalidateSize();
-        map.panTo([latitude, longitude]); // Geser kamera pas ke marker
+        map.panTo([latitude, longitude]); 
     }, 800);
 
 </script>

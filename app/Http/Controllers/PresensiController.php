@@ -301,11 +301,17 @@ class PresensiController extends Controller
      public function tampilkanpeta(Request $request)
      {
         $id = $request->id;
+        // 1. Ambil data presensi user
         $presensi = DB::table('presensi')->where('id', $id)
             ->join('karyawan', 'presensi.nik', '=', 'karyawan.nik')
             ->first();
-        $lokasi_kantor = DB::table('konfigurasi_lokasi')->where('id', 1)->first();
-        return view('presensi.showmap', compact('presensi', 'lokasi_kantor'));
+
+        // 2. Ambil SEMUA data lokasi cabang (Gunakan get, bukan first)
+        // Kita namakan variabelnya $cabang agar sesuai dengan loop di view tadi
+        $cabang = DB::table('konfigurasi_lokasi')->get(); 
+
+        // 3. Kirim ke view (ganti 'lokasi_kantor' jadi 'cabang')
+        return view('presensi.showmap', compact('presensi', 'cabang'));
      }
 
      public function laporan()
