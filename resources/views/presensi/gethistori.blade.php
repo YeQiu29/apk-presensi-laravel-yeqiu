@@ -52,7 +52,7 @@
                         @else
                             <span class="badge bg-warning" 
                                   style="font-size: 0.7rem; width: 100%; padding: 5px 0; display: inline-block;">
-                                Belum Pulang
+                                --:--:--
                             </span>
                         @endif
 
