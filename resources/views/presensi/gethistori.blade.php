@@ -23,23 +23,31 @@
                     
                     <div style="position: relative; display: flex; align-items: center; justify-content: center;">
                         
-                        <span class="badge bg-primary">
-                            {{ $d->jam_out }}
-                        </span>
+                        @if ($d->jam_out != null && $d->jam_out != "00:00:00")
+                            <span class="badge bg-primary">
+                                {{ $d->jam_out }}
+                            </span>
+                            
+                            @if ($d->status_checkout == 'auto')
+                                <span style="
+                                    position: absolute; 
+                                    top: 22px; 
+                                    left: 50%; 
+                                    transform: translateX(-50%); 
+                                    font-size: 0.55rem; 
+                                    color: #dc3545; 
+                                    white-space: nowrap;
+                                    font-weight: bold;
+                                    text-decoration: underline;
+                                ">
+                                    [Checkout Otomatis]
+                                </span>
+                            @endif
                         
-                        @if ($d->status_checkout == 'auto')
-                            <span style="
-                                position: absolute; 
-                                top: 22px; 
-                                left: 50%; 
-                                transform: translateX(-50%); 
-                                font-size: 0.55rem; 
-                                color: #dc3545; 
-                                white-space: nowrap;
-                                font-weight: bold;
-                                text-decoration: underline; /* Menambahkan garis bawah */
-                            ">
-                                [Checkout Otomatis] </span>
+                        @else
+                            <span class="badge bg-warning">
+                                Belum Pulang
+                            </span>
                         @endif
 
                     </div>
