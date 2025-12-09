@@ -41,9 +41,12 @@
     // --- BAGIAN INI ADALAH FIX UNTUK BUG PETA ABU-ABU ---
     // Kita beri jeda sedikit agar Modal selesai animasi terbuka dulu,
     // baru kita suruh peta menyesuaikan ukurannya.
+    // --- BAGIAN INI ADALAH FIX UNTUK BUG PETA ---
     setTimeout(function() {
-        map.invalidateSize();
+        map.invalidateSize(); // 1. Hitung ulang ukuran peta agar tidak abu-abu
+        map.panTo([latitude, longitude]); // 2. Geser kamera kembali tepat ke posisi marker
     }, 800); 
+    // --------------------------------------------
     // -----------------------------------------------------
 
 </script>
